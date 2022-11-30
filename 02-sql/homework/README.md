@@ -44,19 +44,19 @@ Bien, ahora que ya tenemos nuestra base de datos, vamos a empezar a crear tablas
 
 Abajo están detalladas las tres tablas que necesitamos para nuestro ejemplo.
 
-__Movies__ Table:
-    - id
-      - type INTEGER
-      - primary key
-    - name
-      - type TEXT
-      - default value NULL
-    - year
-      - type INTEGER
-      - default value NULL
-    - rank
-      - type REAL
-    - default value NULL
+CREATE TABLE movies(
+    id INTEGER PRIMARY KEY,
+    name TEXT DEFAULT NULL,
+    year INTEGER DEFAULT NULL,
+    rank REAL DEFAULT NULL
+    );
+  
+De esta forma, creamos una tabla; recordar que el comando CREATE TABLE no se cierra hasta 
+los ';'
+Cada elemento separado por ',' hace referencia a una columna de la tabla.
+El primer dato de cada columna especifica el nombre y el segundo el tipo; el tercero es
+opcional y especifica cosas como si la columna tendrá una llave primaria para cada dato
+o si el valor por defecto será null. Con '.tables' podemos ver las tablas creadas 
  
 > :warning: Las columnas que sean _Primary Key_ van a auto-incrementarse sólo si el tipo de datos definidos es __INTEGER__. Sinónimos tales como __INT__ van a hacer que tengan otro comportamiento.
 
@@ -86,17 +86,24 @@ __Roles__ Table:
 
 > :blue_book: El comando `CREATE TABLE` de SQLite es similar, pero no es igual al comando de Postgres. 
 
+Con .schema nameTable podemos ver el esquema con que fue creada la tabla
 
 ### Llenando la bases con datos
 
-Ahora que tenemos la est
-ructura de la DB, podemos empezar a cargar datos usando el comando `INSERT`. 
+Ahora que tenemos la estructura de la DB, podemos empezar a cargar datos usando el comando `INSERT`. 
+
+INSERT INTO nameTable(nameColumn1, nameColumn2, ...) values('value1', value2, value3,...)
+
+Para ver el contenido de una tabla, podemos hacer:
+
+SELECT * FROM nameTable
 
 De todas formas, para poder realizar consultar un poco más complejas, te vamos a dar una BD ya pre-populada con datos de películas. Para bajarla hace click [acá](https://learndotresources.s3.amazonaws.com/workshop/54c55ddb59650e0c0031a83e/imdb-large.sqlite3.db) y guardá el archivo en el mismo directorio donde estabas trabajando.
 
-Ahora para abrir esa DB podes usar el siguiente comando:
+Primero, debemos salirnos de la base de datos en la que estamos, para ello, usamos .quit
+Ahora para abrir esa DB podes usar el siguiente comando ('sqlite3 nameDB.sqlite.db'):
 
-`sqlite3 imdb-large.sqlite3.db`
+`sqlite3 imdb-large.sqlite.db`
 
 ### Chequeando la DB
 
@@ -129,12 +136,13 @@ CREATE TABLE "movies" (
 CREATE INDEX "movies_idx_name" ON "movies" ("name");
 ```
 Con estos comandos podes ver la estructura de una BD y cómo fueron creadas sus tablas.
+El CREATE IMDEX normalmente sirve para realizar bsuquedas mas rapidas.
 
 > Pueden ver info detallada de los comandos [acá](https://sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_).
 
 ### Consultas - Queries
 
-Bien, ahora vamos a empezar a realizar consultas a la Base de Datos. Para hacerlo podemos ingresar código SQL en el prompt de SQLite.
+Bien, ahora vamos a empezar a realizar consultas a la Base de Datos. Para hacerlo podemos ingresar código SQL en el prompt de SQLite, de esta forma, evitamos errores de ortografia en la consola.
 Para probarlo, intentemos recuperar todas las películas que se hicieron en el año 1902 y que obtuvieron un puntaje mayor a 5 en IMBD:
 
 ```
@@ -202,6 +210,9 @@ En el shell de sqlite, si usas el comando `.schema` en la tabla `actors` vas a v
 CREATE INDEX "actors_idx_first_name" ON "actors" ("first_name");
 CREATE INDEX "actors_idx_last_name" ON "actors" ("last_name");
 ```
+
+Los INDEX son como banderas o puntos de referencia para hallar datos mas rapido en la DB
+
 10. __Immortal Actors__
 
 Qué actores actuaron en una película antes de 1900 y también en una película después del 2000?
