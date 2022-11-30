@@ -16,6 +16,7 @@ GitHub
 Youtube
 Spotify
 Slack
+Discord
 ```
 
 ## Donde diseñar
